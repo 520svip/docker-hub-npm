@@ -219,7 +219,7 @@ export default {
 
 		const fakePage = checkHost ? checkHost[1] : false; // 确保 fakePage 不为 undefined
 
-		console.log('URL：' + url.href)
+		// console.log('URL：' + url.href)
 		console.log(`域名头部: ${hostTop}\n反代地址: ${hub_host}\n伪装首页: ${fakePage}\npathname: ${url.pathname}`);
 		const isUuid = isUUID(pathname.split('/')[1].split('/')[0]);
 
