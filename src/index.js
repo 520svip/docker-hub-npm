@@ -219,7 +219,7 @@ export default {
 
 		const fakePage = checkHost ? checkHost[1] : false; // 确保 fakePage 不为 undefined
 
-		// console.log('URL：' + url.href)
+		console.log('URL：' + url.href);
 		console.log(`域名头部: ${hostTop}\n反代地址: ${hub_host}\n伪装首页: ${fakePage}\npathname: ${url.pathname}`);
 		const isUuid = isUUID(pathname.split('/')[1].split('/')[0]);
 
@@ -247,7 +247,6 @@ export default {
 			pathname == '/',
 			pathname == '/favicon.ico',
 			pathname == '/auth/profile',
-			pathname == '/c544f2d7540fc91cdd299e6a0f2b87ce.txt',
 		];
 
 		if (conditions.some(condition => condition) && (fakePage === true || hostTop == 'docker')) {
@@ -275,14 +274,8 @@ export default {
 				// 	  'Content-Type': 'text/html; charset=UTF-8',
 				// 	},
 				// });
-			} else if (url.pathname == '/c544f2d7540fc91cdd299e6a0f2b87ce.txt') {
-				return new Response("6e795ec427b474044f225f79d6519a03f0fd4cc0", {
-					headers: {
-						'Content-Type': 'text/html; charset=UTF-8',
-					},
-				});
 			}
-
+			
 			const newUrl = new URL("https://registry.hub.docker.com" + pathname + url.search);
 
 			// 复制原始请求的标头
