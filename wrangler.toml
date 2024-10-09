@@ -8,7 +8,7 @@ compatibility_flags = ["nodejs_compat"]
 # 文档: https://developers.cloudflare.com/workers/configuration/routing/
 # 域配置: https://developers.cloudflare.com/workers/configuration/routing/custom-domains/#set-up-a-custom-domain-in-your-wranglertoml
 # 路由配置: https://developers.cloudflare.com/workers/configuration/routing/routes/#set-up-a-route-in-wranglertoml
-workers_dev = false
+workers_dev = true
 routes = [
   { pattern = "hub.1panel.dev/*", zone_name = "1panel.dev" },
   { pattern = "docker.1panel.dev/*", zone_name = "1panel.dev" },
