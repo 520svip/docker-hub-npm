@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="baidu-site-verification" content="codeva-bAkVoK6MGK" />
+  <title>Docker镜像加速说明</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      /*background-image: url('https://qninq.cn/api/bingimg/');*/
+      background-image: url('https://imgapi.cn/api.php?zd=zsy&fl=fengjing&gs=images');
+      /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+      color: #007aff;
+    }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 30px 20px 20px 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    pre::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 12px;
+      height: 12px;
+      background: #ff5f56;
+      border-radius: 50%;
+      box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-size: 0.875em;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #007aff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    pre:hover .copy-button {
+      opacity: 1;
+    }
+
+    /*底部页脚css*/
+    .github-badge {
+      display: inline-block;
+      border-radius: 4px;
+      text-shadow: none;
+      font-size: 12px;
+      color: #fff;
+      line-height: 15px;
+      background-color: #abbac3;
+      margin-bottom: 2px
+    }
+
+    .github-badge .badge-subject {
+      display: inline-block;
+      background-color: #4d4d4d;
+      padding: 4px 4px 4px 6px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px
+    }
+
+    .github-badge .badge-value {
+      display: inline-block;
+      padding: 4px 6px 4px 4px;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px
+    }
+
+    .github-badge .bg-blue {
+      background-color: #007ec6
+    }
+
+    .github-badge .bg-orange {
+      background-color: #ffa500
+    }
+
+    .github-badge .bg-green {
+      background-color: #3bca6e
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    #search-input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 90%;
+      margin-right: 10px;
+    }
+
+    #search-button {
+      padding: 10px;
+      background-color: rgba(29, 99, 237, 0.5);
+      /* 设置白色，透明度为10% */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #search-button svg {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <center>
+      <h1>Docker镜像加速说明</h1>
+    </center>
+    <!--统计-->
+    <center>
+      <div class="github-badge">
+        <span class="badge-subject">PV</span>
+        <!--<span class="badge-value bg-blue" id="busuanzi_site_pv"></span>-->
+        <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+      </div> |
+      <div class="github-badge">
+        <span class="badge-subject">UV</span>
+        <!--<span class="badge-value bg-green" id="busuanzi_site_uv"></span>-->
+        <span class="badge-value bg-green" id="busuanzi_value_site_uv"></span>
+      </div>
+      <p id="time"></p>
+    </center>
+    <center>
+      <h2>搜索镜像</h2>
+    </center>
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="Search Docker Hub">
+      <button id="search-button">
+        <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+            stroke="white" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+    <center>
+      <h2>使用方法①</h2>
+    </center>
+    <h3>原拉取镜像命令：</h3>
+    <pre><code>docker pull library/alpine:latest</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>加速拉取镜像命令：</h3>
+    <pre><code>docker pull {workers_host}/library/alpine:latest</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <center>
+      <h2>使用方法②</h2>
+    </center>
+    <h3>一键设置镜像加速：修改文件 /etc/docker/daemon.json（如果不存在则创建）</h3>
+    <pre><code>nano /etc/docker/daemon.json</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>修改JSON文件 更改为以下内容 然后保存</h3>
+    <pre><code>{
+  "registry-mirrors": ["https://{workers_host}"]
+}</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>重载systemd管理守护进程配置文件</h3>
+    <pre><code>sudo systemctl daemon-reload</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>重启 Docker 服务</h3>
+    <pre><code>sudo systemctl restart docker</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <center>
+      <h2>使用方法③</h2>
+    </center>
+    <h3>为了加速镜像拉取，使用以下命令设置<b>registry mirror</b>：</h3>
+    <pre><code>sudo tee /etc/docker/daemon.json &lt;&lt;EOF
+{
+    "registry-mirrors": ["https://{workers_host}"]
+}
+EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>重载systemd管理守护进程配置文件</h3>
+    <pre><code>sudo systemctl daemon-reload</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <h3>重启 Docker 服务</h3>
+    <pre><code>sudo systemctl restart docker</code><button class="copy-button" onclick="copyCode(this)">复制代码</button></pre>
+    <center>
+      <div class="github-badge">
+        <span class="badge-subject">Copyright</span>
+        <a href="https://7.nf/" target="_self">
+          <span class="badge-value bg-green">©2024 无名</span>
+        </a>
+      </div> |
+      <div class="github-badge">
+        <span class="badge-subject">Powerd By</span>
+        <a href="https://dash.cloudflare.com" target="_blank">
+          <span class="badge-value bg-orange">CloudFlare</span></a>
+      </div> |
+      <div class="github-badge">
+        <span class="badge-subject">凌霞推荐码</span>
+        <a href="https://www.lxware.cn/?code=vip888" target="_self">
+          <span class="badge-value bg-blue">vip888</span>
+        </a>
+      </div>
+      <p id="51la">
+        <script id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8"
+          src="https://v6-widget.51.la/v6/KakyjEFEE3lZqejl/quote.js?theme=0&f=12&display=0,1,1,1,1,1,1,1"></script>
+      </p>
+      <p id="cf"></p>
+    </center>
+  </div>
+  <!--<script defer src="//busuanzi.9420.ltd/js"></script>-->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>
+
+    function performSearch() {
+      const query = document.getElementById('search-input').value;
+      if (query) {
+        window.location.href = '/search?q=' + encodeURIComponent(query);
+      }
+    }
+
+    document.getElementById('search-button').addEventListener('click', performSearch);
+    document.getElementById('search-input').addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        performSearch();
+      }
+    });
+
+    function copyCode(button) {
+      const code = button.previousSibling;
+      const textArea = document.createElement('textarea');
+      textArea.value = code.textContent;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      button.textContent = '已复制';
+      setTimeout(() => {
+        button.textContent = '复制代码';
+      }, 2000);
+    }
+
+    async function updateCloudflareInfo() {
+      try {
+        const response = await fetch('/cdn-cgi/trace');
+        if (response.ok) {
+          const data = await response.text();
+          const lines = data.split('\n');
+          const info = {};
+          lines.forEach(line => {
+            const parts = line.split('=');
+            if (parts.length === 2) {
+              info[parts[0]] = parts[1];
+            }
+          });
+          const cfElement = document.getElementById('cf');
+          const displayText = info.loc + " " + info.ip + " | " + info.colo + " | " + info.http +
+            " | " + info.visit_scheme + " | " + info.tls + " | " + info.kex;
+          cfElement.textContent = displayText;
+        }
+      } catch (error) {
+        console.error('获取Cloudflare节点信息失败: ', error);
+      }
+    }
+
+    function getCurrentTime() {
+      let now = new Date();
+      let year = now.getFullYear();
+      let month = (now.getMonth() + 1).toString().padStart(2, '0');
+      let day = now.getDate().toString().padStart(2, '0');
+      let hours = now.getHours().toString().padStart(2, '0');
+      let minutes = now.getMinutes().toString().padStart(2, '0');
+      let seconds = now.getSeconds().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    async function updateTime() {
+      const timeElement = document.getElementById('time');
+      timeElement.textContent = getCurrentTime();
+    }
+
+    let intervalIdTime = setInterval(updateTime, 1000);
+    // clearInterval(intervalIdTime);
+    window.addEventListener('load', updateCloudflareInfo);
+
+    !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KakyjEFEE3lZqejl", ck: "KakyjEFEE3lZqejl", autoTrack: true, hashMode: true });
+  </script>
+</body>
+
+</html>
