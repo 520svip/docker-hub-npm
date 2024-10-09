@@ -1,7 +1,13 @@
-# docker镜像加速源
+# docker镜像加速站 
 
-## 介绍
-**本项目是基于cloudflare worker运行的docker镜像加速源** 
+## 介绍 
+**本项目是基于cloudflare worker运行的docker镜像加速站**
+
+**Docker镜像加速站是一种通过配置国内或国际的镜像加速器，来提高从Docker Hub等官方仓库拉取镜像的速度和稳定性的服务。**
+
+## 项目地址
+### ![GitHub Repo stars](https://img.shields.io/github/stars/520svip/docker-hub-npm.svg) GitHub：[https://github.com/520svip/docker-hub-npm](https://github.com/520svip/docker-hub-npm)
+### ![Gitee Repo stars](https://gitee.com/svip520/docker-hub-npm/badge/star.svg) Gitee：[https://gitee.com/svip520/docker-hub-npm](https://gitee.com/svip520/docker-hub-npm)
 
 ## 演示网站
 ### [https://docker.1panel.dev](https://docker.1panel.dev)
