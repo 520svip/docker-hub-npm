@@ -6,6 +6,20 @@
 ## 演示网站
 ### [https://docker.1panel.dev](https://docker.1panel.dev)
 
+## 部署教程
+#### 1、下载定义的依赖包：
+```
+npm install
+```
+#### 2、预览和测试应用程序：
+```
+npx wrangler dev
+```
+#### 3、部署应用程序置Cloudflare Workers：
+```
+npx wrangler deploy
+```
+
 ## 使用方法①
 #### 原拉取镜像命令：
 ```
