@@ -202,7 +202,7 @@
     </center>
     <div class="search-container">
       <input type="text" id="search-input" placeholder="Search Docker Hub">
-      <button id="search-button">
+      <button id="search-button" onclick="performSearch()">
         <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
@@ -268,10 +268,14 @@ EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</but
       <p id="cf"></p>
     </center>
   </div>
+  <!-- 不蒜子统计 -->
   <!--<script defer src="//busuanzi.9420.ltd/js"></script>-->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!-- 弹窗js -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script>
 
+    // docker hub 搜索
     function performSearch() {
       const query = document.getElementById('search-input').value;
       if (query) {
@@ -279,13 +283,15 @@ EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</but
       }
     }
 
-    document.getElementById('search-button').addEventListener('click', performSearch);
+    // 监听回车搜索事件
+    // document.getElementById('search-button').addEventListener('click', performSearch);
     document.getElementById('search-input').addEventListener('keypress', function (event) {
       if (event.key === 'Enter') {
         performSearch();
       }
     });
 
+    // 复制代码
     function copyCode(button) {
       const code = button.previousSibling;
       const textArea = document.createElement('textarea');
@@ -300,6 +306,7 @@ EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</but
       }, 2000);
     }
 
+    // 获取cloudflare cdn信息
     async function updateCloudflareInfo() {
       try {
         const response = await fetch('/cdn-cgi/trace');
@@ -323,6 +330,7 @@ EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</but
       }
     }
 
+    // 实时时间
     function getCurrentTime() {
       let now = new Date();
       let year = now.getFullYear();
@@ -334,15 +342,21 @@ EOF</code><button class="copy-button" onclick="copyCode(this)">复制代码</but
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
+    // 更新界面时间
     async function updateTime() {
       const timeElement = document.getElementById('time');
       timeElement.textContent = getCurrentTime();
     }
 
+    // 更新时间定时器
     let intervalIdTime = setInterval(updateTime, 1000);
     // clearInterval(intervalIdTime);
     window.addEventListener('load', updateCloudflareInfo);
 
+    // 公告
+    swal("温馨提示", "由于cloudflare worker每日请求次数有限，目前本网站已经屏蔽部分监控本站请求（不会拉黑IP，也不影响docker镜像的拉取），对于此类请求，HTTP状态码将返回403，部分监控工具检测到网站返回403可视为网站处于正常运营状态\r\n\r\n已屏蔽监控工具：Uptime Kuma");
+
+    // 51la统计
     !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KakyjEFEE3lZqejl", ck: "KakyjEFEE3lZqejl", autoTrack: true, hashMode: true });
   </script>
 </body>
